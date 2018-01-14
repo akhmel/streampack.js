@@ -13,16 +13,19 @@ Currently Streampack is built to work with React. Potentially we can enable supp
 
 ```js
 import React from 'react';
-import { sync, render } from 'streampack.js';
+import { sync, listen, render } from 'streampack.js';
 
 export default class HelloWorld extends React.Component {
   componentDidMount() {
+    listen(this);
     setTimeout(() => {
       this.setState({ thisIsAwesome: true });
     }, 5000);
   }
 
-  component
+  componentDidUpdate() {
+    sync(this);
+  }
 
   render() {
     return render(
@@ -30,5 +33,4 @@ export default class HelloWorld extends React.Component {
     )
   }
 }
-
 ```
