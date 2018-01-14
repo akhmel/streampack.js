@@ -9,3 +9,26 @@ All browser events are transmitted to the server, which responds with DOM tree t
 ## Compatibility
 Currently Streampack is built to work with React. Potentially we can enable support for Vue.js, jquery and angular.
 
+## Usage
+
+```js
+import React from 'react';
+import { sync, render } from 'streampack.js';
+
+export default class HelloWorld extends React.Component {
+  componentDidMount() {
+    setTimeout(() => {
+      this.setState({ thisIsAwesome: true });
+    }, 5000);
+  }
+
+  component
+
+  render() {
+    return render(
+      <h1>Hello!</h1>
+    )
+  }
+}
+
+```
