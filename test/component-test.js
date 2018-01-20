@@ -6,13 +6,13 @@ import StreampackComponent from '../src/components/StreampackComponent';
 import StreampackProvider from '../src/components/StreampackProvider';
 
 class Simple extends StreampackComponent(React) {
-  _render() {
+  renderWithStreampack() {
     return <div>hey</div>;
   }
 }
 
 class TwoLevels extends StreampackComponent(React) {
-  _render() {
+  renderWithStreampack() {
     return <div>
       <h1>hey</h1>
       <h2>yo</h2>
@@ -21,7 +21,7 @@ class TwoLevels extends StreampackComponent(React) {
 }
 
 class ThreeLevels extends StreampackComponent(React) {
-  _render() {
+  renderWithStreampack() {
     return <div>
       <h1>hey</h1>
       <div>
@@ -33,7 +33,7 @@ class ThreeLevels extends StreampackComponent(React) {
 }
 
 class FourLevels extends StreampackComponent(React) {
-  _render() {
+  renderWithStreampack() {
     return <div>
       <h1>hey</h1>
       <div>
