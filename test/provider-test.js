@@ -6,7 +6,7 @@ import StreampackProvider from '../src/components/StreampackProvider';
 
 class WrappingExample extends React.Component {
   render() {
-    const { _childIndex } = this.props;
+    const { _childIndex } = this.props.streampack;
     return <div>
       <h1>cool stuff here {_childIndex}</h1>
       {this.props.children}
@@ -16,7 +16,7 @@ class WrappingExample extends React.Component {
 
 class Simple extends React.Component {
   render() {
-    const { _childIndex } = this.props;
+    const { _childIndex } = this.props.streampack;
     return <div>simple {_childIndex}</div>;
   }
 }

@@ -23,10 +23,12 @@ export default class StreampackProvider extends React.Component {
     }
     if (ch.type instanceof Function) {
       return React.cloneElement(ch, {
-        _newState: this.statePayload && this.statePayload[i],
-        _childIndex: i,
-        _onSetState: this._onSetState,
-        _event: this._event,
+        streampack: {
+          _newState: this.statePayload && this.statePayload[i],
+          _childIndex: i,
+          _onSetState: this._onSetState,
+          _event: this._event
+        },
         children: subchld
       });
     }

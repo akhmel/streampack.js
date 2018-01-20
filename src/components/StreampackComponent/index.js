@@ -1,7 +1,7 @@
 export default function StreampackComponent (reakt) {
   return class Component extends reakt.Component {
     setState(newState) {
-      const { _childIndex, _onSetState } = this.props;
+      const { _childIndex, _onSetState } = this.props.streampack;
       let statePayload = {}; statePayload[_childIndex] = newState;
       _onSetState(statePayload);
     }
@@ -14,7 +14,7 @@ export default function StreampackComponent (reakt) {
 
     // TODO: consider element content, not only ind
     _hashFunction(ind) {
-      const { props: { _childIndex }} = this;
+      const { _childIndex } = this.props.streampack;
       return `${this._stringifyInd(_childIndex)}-${this._stringifyInd(ind)}`;
     }
 
@@ -53,7 +53,7 @@ export default function StreampackComponent (reakt) {
     }
 
     render() {
-      const { _event, _newState } = this.props;
+      const { _event, _newState } = this.props.streampack;
       this.eventsMap = {};
       this.state = (_newState && Object.assign(this.state, _newState)) || this.state;
       this._hashFunction = this._hashFunction.bind(this);

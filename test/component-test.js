@@ -48,28 +48,28 @@ class FourLevels extends StreampackComponent(React) {
 
 describe('StreampackComponent', () => {
   it('adds spid (simple case)', () => {
-    const wrapper = mount(<Simple _childIndex={100}/>);
+    const wrapper = mount(<Simple streampack={{_childIndex: 100}}/>);
     const sidOccurence = (wrapper.html().match(/sid/g) || []).length
     expect(sidOccurence).to.equal(1);
     expect(wrapper.html()).to.equal('<div sid="baa-a">hey</div>');
   });
 
   it('adds spid (two levels case)', () => {
-    const wrapper = mount(<TwoLevels _childIndex={200} />);
+    const wrapper = mount(<TwoLevels streampack={{_childIndex: 200}} />);
     const sidOccurence = (wrapper.html().match(/sid/g) || []).length
     expect(sidOccurence).to.equal(3);
     expect(wrapper.html()).to.equal('<div sid="caa-b"><h1 sid="caa-c">hey</h1><h2 sid="caa-d">yo</h2></div>');
   });
 
   it('adds spid (three levels case)', () => {
-    const wrapper = mount(<ThreeLevels _childIndex={300} />);
+    const wrapper = mount(<ThreeLevels streampack={{_childIndex: 300}} />);
     const sidOccurence = (wrapper.html().match(/sid/g) || []).length
     expect(sidOccurence).to.equal(5);
     expect(wrapper.html()).to.equal('<div sid="daa-b"><h1 sid="daa-c">hey</h1><div sid="daa-d"><button sid="daa-e">click!</button><span sid="daa-f">haha</span></div></div>');
   });
 
   it('adds spid (four levels case)', () => {
-    const wrapper = mount(<FourLevels _childIndex={400} />);
+    const wrapper = mount(<FourLevels streampack={{_childIndex: 400}} />);
     const sidOccurence = (wrapper.html().match(/sid/g) || []).length
     expect(sidOccurence).to.equal(6);
     expect(wrapper.html()).to.equal('<div sid="eaa-b"><h1 sid="eaa-c">hey</h1><div sid="eaa-d"><div sid="eaa-e"><h1 sid="eaa-f">Foo</h1><h2 sid="eaa-g">Bar</h2></div></div></div>');
