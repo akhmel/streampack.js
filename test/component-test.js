@@ -11,6 +11,18 @@ class Simple extends StreampackComponent(React) {
   }
 }
 
+class Combined extends StreampackComponent(React) {
+  renderWithStreampack() {
+    return (
+      <div>
+        <div>combined</div>
+        <Simple key='one'/>
+        <Simple key='two'/>
+      </div>
+    )
+  }
+}
+
 class TwoLevels extends StreampackComponent(React) {
   renderWithStreampack() {
     return <div>
@@ -54,6 +66,13 @@ describe('StreampackComponent', () => {
     expect(wrapper.html()).to.equal('<div sid="baa-a">hey</div>');
   });
 
+  it('adds spid (simple case with key)', () => {
+    const wrapper = mount(<Simple streampack={{scope: 'smpl', _childIndex: 100}}/>);
+    const sidOccurence = (wrapper.html().match(/sid/g) || []).length
+    expect(sidOccurence).to.equal(1);
+    expect(wrapper.html()).to.equal('<div sid="baa-a-smpl">hey</div>');
+  });
+
   it('adds spid (two levels case)', () => {
     const wrapper = mount(<TwoLevels streampack={{_childIndex: 200}} />);
     const sidOccurence = (wrapper.html().match(/sid/g) || []).length
@@ -80,5 +99,12 @@ describe('StreampackComponent', () => {
     const sidOccurence = (wrapper.html().match(/sid/g) || []).length
     expect(sidOccurence).to.equal(6);
     expect(wrapper.html()).to.equal('<div sid="b-b"><h1 sid="b-c">hey</h1><div sid="b-d"><div sid="b-e"><h1 sid="b-f">Foo</h1><h2 sid="b-g">Bar</h2></div></div></div>');
+  });
+
+  it('adds spid to Combined component (wrapped by Provider)', () => {
+    const wrapper = mount(<StreampackProvider><Combined/></StreampackProvider>);
+    // const sidOccurence = (wrapper.html().match(/sid/g) || []).length
+    // expect(sidOccurence).to.equal(6);
+    expect(wrapper.html()).to.equal('');
   });
 });

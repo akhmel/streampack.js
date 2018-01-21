@@ -9,6 +9,26 @@ import { StreampackComponent, enrichWithStreampack, StreampackServer } from '../
 import { renderToString, renderToStaticMarkup } from 'react-dom/server';
 
 
+class ExampleButton extends StreampackComponent(React) {
+  constructor(props) {
+    super(props);
+    this.state = { clicked: false };
+  }
+
+  buttonClickHandler() {
+    console.log('HEEY FROM SUBBUTTON');
+    this.setState({clicked: true});
+  }
+  renderWithStreampack() {
+    const { clicked } = this.state;
+    if (clicked) {
+      return <h3>you just clicked another button</h3>
+    }
+    return <button onClick={this.buttonClickHandler.bind(this)}>hey this is button from another component</button>
+  }
+}
+
+
 class HelloWorld extends StreampackComponent(React) {
   constructor(props) {
     super(props);
@@ -21,14 +41,23 @@ class HelloWorld extends StreampackComponent(React) {
   }
   titleClickHandler() {
     console.log('clicked title!!!!');
-    this.setState({test: 'niiicee'});
   }
   renderWithStreampack() {
-    console.log(JSON.stringify(this.state));
-    return <div>
-      <h1 onClick={this.titleClickHandler.bind(this)}>Hello!</h1>
-      <button onClick={this.buttonClickHandler.bind(this)}>click me</button>
-    </div>;
+    const { hello } = this.state;
+    if (hello === 'yo!') {
+      return <div>
+        <h1 onClick={this.titleClickHandler.bind(this)}>Hello!</h1>
+        <h2>button was clicked! thank you</h2><br/>
+        <ExampleButton/>
+        <div>Powered by:</div>
+        <div>Blinkloader</div>
+      </div>;
+    } else {
+      return <div>
+        <h1 onClick={this.titleClickHandler.bind(this)}>Hello!</h1>
+        <button onClick={this.buttonClickHandler.bind(this)}>click me</button>
+      </div>;
+    }
   }
 }
 

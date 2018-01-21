@@ -9,7 +9,6 @@ export default class StreampackProvider extends React.Component {
     this.recursiveChildIndex = this.recursiveChildIndex.bind(this);
   }
 
-  // TODO: consider element content, not only ind
   recursiveChildIndex(ch, i) {
     let subchld; i++;
     if (ch.props.children instanceof Array) {
@@ -24,15 +23,19 @@ export default class StreampackProvider extends React.Component {
     if (ch.type instanceof Function) {
       return React.cloneElement(ch, {
         streampack: {
-          _newState: this.statePayload && this.statePayload[i],
+          _stateStorage: this.statePayload,
+          _newState: this.statePayload && this.statePayload[`${i}-0`],
           _childIndex: i,
+          _subChildIndex: 0,
           _onSetState: this._onSetState,
           _event: this._event
         },
         children: subchld
       });
     }
-    return React.cloneElement(ch, { children: subchld });
+    return React.cloneElement(ch, {
+      children: subchld
+    });
   }
 
   render() {

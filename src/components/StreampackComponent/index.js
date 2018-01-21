@@ -12,10 +12,11 @@ export default function StreampackComponent (reakt) {
       }).join('');
     }
 
-    // TODO: consider element content, not only ind
-    _hashFunction(ind) {
-      const { _childIndex } = this.props.streampack;
-      return `${this._stringifyInd(_childIndex)}-${this._stringifyInd(ind)}`;
+    _hashFunction(ind, subind) {
+      const { streampack : { _childIndex, scope } } = this.props;
+      // const _subChildIndex = subind;
+      let res = `${this._stringifyInd(_childIndex)}-${this._stringifyInd(ind)}`;
+      return (scope && `${res}-${scope}`) || res;
     }
 
     _recursiveSid(ch, i) {
@@ -37,13 +38,22 @@ export default function StreampackComponent (reakt) {
         this.eventsMap[sid].onClick = ch.props.onClick;
       }
 
-      return reakt.cloneElement(
-        ch, {
-          sid: sid,
-          key: ch.key || sid,
-          children: subchld
-        }
-      );
+      let propsPayload = {
+        sid: sid,
+        key: ch.key || sid,
+        children: subchld
+      }
+      //
+      // if (ch.type instanceof Function) {
+      //   propsPayload.streampack = this.props.streampack;
+      //   propsPayload.streampack._subChildIndex = subind;
+      //   const {_childIndex, _subChildIndex} = propsPayload.streampack;
+      //   propsPayload.streampack._newState = propsPayload.streampack._stateStorage && propsPayload.streampack._stateStorage[`${_childIndex}-${_subChildIndex}`];
+      //   console.log(propsPayload);
+      //   console.log(ch);
+      // }
+
+      return reakt.cloneElement(ch, propsPayload);
     }
 
     _translateEventToHandler(eventName) {
@@ -53,10 +63,9 @@ export default function StreampackComponent (reakt) {
     }
 
     render() {
-      const { _event, _newState } = this.props.streampack;
+      const { _event, _newState, _onSetState } = this.props.streampack;
       this.eventsMap = {};
       this.state = (_newState && Object.assign(this.state, _newState)) || this.state;
-      this._hashFunction = this._hashFunction.bind(this);
       const renderRes = this.renderWithStreampack(); const index = 0; let finalOutput;
       if (renderRes.props.children instanceof Array) {
         finalOutput = this._recursiveSid(renderRes, index);
@@ -64,12 +73,13 @@ export default function StreampackComponent (reakt) {
         finalOutput = reakt.cloneElement(renderRes, { sid: this._hashFunction(index) });
       }
 
-      if (_event) {
-        if (this.eventsMap[_event.sid]) {
-          if (this.eventsMap[_event.sid][this._translateEventToHandler(_event.event)] instanceof Function) {
-            this.eventsMap[_event.sid][this._translateEventToHandler(_event.event)]();
-          }
-        }
+      // console.log(this);
+
+      if (_event
+        && this.eventsMap[_event.sid]
+        && this.eventsMap[_event.sid][this._translateEventToHandler(_event.event)] instanceof Function
+      ) {
+        this.eventsMap[_event.sid][this._translateEventToHandler(_event.event)]();
       }
 
       return finalOutput;
