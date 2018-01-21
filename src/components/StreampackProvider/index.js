@@ -1,10 +1,18 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+
+const contextTypes = {
+  streampack: PropTypes.shape({
+    _newState: PropTypes.object,
+    _onSetState: PropTypes.func,
+    _event: PropTypes.object
+  })
+};
 
 export default class StreampackProvider extends React.Component {
+  static childContextTypes = contextTypes;
   constructor(props) {
     super(props);
-    this._event = this.props.event;
-    this._onSetState = this.props.onSetState;
     this.statePayload = this.props.statePayload;
     this.recursiveChildIndex = this.recursiveChildIndex.bind(this);
   }
@@ -23,10 +31,8 @@ export default class StreampackProvider extends React.Component {
     if (ch.type instanceof Function) {
       return React.cloneElement(ch, {
         streampack: {
-          _newState: this.statePayload && this.statePayload[i],
           _childIndex: i,
-          _onSetState: this._onSetState,
-          _event: this._event
+          _componentSid: 'a'
         },
         children: subchld
       });
@@ -34,6 +40,17 @@ export default class StreampackProvider extends React.Component {
     return React.cloneElement(ch, {
       children: subchld
     });
+  }
+
+  getChildContext() {
+    const { event, onSetState, statePayload } = this.props;
+    return {
+      streampack: {
+        _appState: statePayload || {},
+        _onSetState: onSetState,
+        _event: event
+      }
+    };
   }
 
   render() {

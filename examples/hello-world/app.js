@@ -21,10 +21,13 @@ class ExampleButton extends StreampackComponent(React) {
   }
   renderWithStreampack() {
     const { clicked } = this.state;
+    let result;
     if (clicked) {
-      return <h3>you just clicked another button</h3>
+      result = <h3>you just clicked another button</h3>
+    } else {
+      result = <div><button onClick={this.buttonClickHandler.bind(this)}>hey this is button from another component</button></div>
     }
-    return <button onClick={this.buttonClickHandler.bind(this)}>hey this is button from another component</button>
+    return result;
   }
 }
 
@@ -42,15 +45,15 @@ class HelloWorld extends StreampackComponent(React) {
   titleClickHandler() {
     console.log('clicked title!!!!');
   }
-  // <ExampleButton/>
   renderWithStreampack() {
     const { hello } = this.state;
     if (hello === 'yo!') {
       return <div>
         <h1 onClick={this.titleClickHandler.bind(this)}>Hello!</h1>
         <h2>button was clicked! thank you</h2><br/>
+        <ExampleButton/>
         <div>Powered by:</div>
-        <div>Blinkloader</div>
+        <div>Streampack</div>
       </div>;
     } else {
       return <div>
