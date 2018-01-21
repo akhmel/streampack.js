@@ -42,13 +42,13 @@ class HelloWorld extends StreampackComponent(React) {
   titleClickHandler() {
     console.log('clicked title!!!!');
   }
+  // <ExampleButton/>
   renderWithStreampack() {
     const { hello } = this.state;
     if (hello === 'yo!') {
       return <div>
         <h1 onClick={this.titleClickHandler.bind(this)}>Hello!</h1>
         <h2>button was clicked! thank you</h2><br/>
-        <ExampleButton/>
         <div>Powered by:</div>
         <div>Blinkloader</div>
       </div>;

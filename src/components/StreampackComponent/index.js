@@ -12,7 +12,7 @@ export default function StreampackComponent (reakt) {
       }).join('');
     }
 
-    _hashFunction(ind, subind) {
+    _hashFunction(ind) {
       const { streampack : { _childIndex, scope } } = this.props;
       // const _subChildIndex = subind;
       let res = `${this._stringifyInd(_childIndex)}-${this._stringifyInd(ind)}`;
@@ -43,15 +43,16 @@ export default function StreampackComponent (reakt) {
         key: ch.key || sid,
         children: subchld
       }
-      //
-      // if (ch.type instanceof Function) {
+
+      if (ch.type instanceof Function) {
+        // propsPayload.streampack = this.props.streampack;
       //   propsPayload.streampack = this.props.streampack;
       //   propsPayload.streampack._subChildIndex = subind;
       //   const {_childIndex, _subChildIndex} = propsPayload.streampack;
       //   propsPayload.streampack._newState = propsPayload.streampack._stateStorage && propsPayload.streampack._stateStorage[`${_childIndex}-${_subChildIndex}`];
       //   console.log(propsPayload);
       //   console.log(ch);
-      // }
+      }
 
       return reakt.cloneElement(ch, propsPayload);
     }
